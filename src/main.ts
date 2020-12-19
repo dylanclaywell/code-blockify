@@ -13,8 +13,6 @@ function createWindow() {
   window.loadFile("public/index.html")
 }
 
-console.log('app');
-
 app.whenReady().then(createWindow)
 
 app.on("window-all-closed", () => {
