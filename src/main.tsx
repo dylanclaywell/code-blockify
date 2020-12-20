@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron"
+import path from "path"
 
 function createWindow() {
   const window = new BrowserWindow({
@@ -10,7 +11,7 @@ function createWindow() {
     },
   })
 
-  window.loadFile("public/index.html")
+  window.loadFile(path.resolve(__dirname, "public/index.html"))
 }
 
 app.whenReady().then(createWindow)
