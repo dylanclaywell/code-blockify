@@ -32,12 +32,13 @@
   "main": "dist/electron.bundle.js",
   "scripts": {
     "build": "webpack",
-    "start": "yarn build && electron-forge start ./dist/electron.bundle.js",
+    "start": "cross-env NODE_ENV=development yarn build && electron-forge start ./dist/electron.bundle.js",
     "check:types": "eslint src --ext .ts",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

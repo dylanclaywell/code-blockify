@@ -1,22 +1,23 @@
-const path = require("path")
-const CopyPlugin = require("copy-webpack-plugin")
+const path = require('path')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
+  devtool: 'source-map',
   entry: {
     electron: {
-      import: path.resolve(__dirname, "./src/main.tsx"),
+      import: path.resolve(__dirname, './src/main.tsx'),
     },
     react: {
-      import: path.resolve(__dirname, "./src/App.tsx"),
+      import: path.resolve(__dirname, './src/App.tsx'),
     },
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].bundle.js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].bundle.js',
   },
-  target: "electron-renderer",
+  target: 'electron-renderer',
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -24,13 +25,13 @@ module.exports = {
         test: /.ts|tsx$/,
         exclude: /(node_modules|dist)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            plugins: ["@babel/plugin-transform-object-assign"],
+            plugins: ['@babel/plugin-transform-object-assign'],
             presets: [
-              "@babel/preset-env",
-              "@babel/preset-react",
-              "@babel/preset-typescript",
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript',
             ],
           },
         },
@@ -39,7 +40,7 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: "./src/public", to: "public" }],
+      patterns: [{ from: './src/public', to: 'public' }],
     }),
   ],
 }

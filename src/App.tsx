@@ -1,11 +1,16 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import Main from './screens/main/Main'
 
 const App: React.FC = () => {
-  console.log("hello?")
-  return <div>App will go here.</div>
+  return (
+    <div>
+      <Main />
+    </div>
+  )
 }
 
 window.onload = () => {
-  ReactDOM.render(<App />, document.getElementById("root"))
+  ReactDOM.render(<App />, document.getElementById('root'))
 }
