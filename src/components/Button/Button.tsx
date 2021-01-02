@@ -2,7 +2,7 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import classnames from 'classnames'
 
-import colors from '../colors'
+import colors from '../../colors'
 
 const useStyles = createUseStyles(
   {
@@ -17,16 +17,31 @@ const useStyles = createUseStyles(
     },
     contained: {
       color: colors.white,
-      background: colors.secondaryRed,
+      background: colors.primary.dark,
       '&:hover': {
-        background: colors.primaryRed,
+        background: colors.primary.base,
       },
     },
     text: {
-      color: colors.darkRed,
       background: 'none',
+      color: colors.primary.dark,
       '&:hover': {
-        background: colors.lightRed,
+        background: colors.primary.light,
+      },
+    },
+    secondary: {
+      '&$text': {
+        color: colors.secondary.dark,
+        '&:hover': {
+          background: colors.secondary.light,
+        },
+      },
+      '&$contained': {
+        color: colors.white,
+        background: colors.secondary.dark,
+        '&:hover': {
+          background: colors.secondary.base,
+        },
       },
     },
   },
@@ -37,17 +52,20 @@ type Props = {
   onClick: () => void
   text: string
   variant?: 'text' | 'contained'
+  color?: 'primary' | 'secondary'
 }
 
 const Button: React.FC<Props> = ({
   onClick,
   text,
   variant = 'text',
+  color = 'primary',
 }: Props) => {
   const classes = useStyles()
   const rootClasses = classnames(classes.root, {
     [classes.text]: variant === 'text',
     [classes.contained]: variant === 'contained',
+    [classes.secondary]: color === 'secondary',
   })
 
   return (

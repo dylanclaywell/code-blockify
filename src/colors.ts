@@ -1,8 +1,14 @@
 export default {
-  primaryRed: '#FF0000',
-  darkRed: '#800000',
-  secondaryRed: '#BF0000',
-  lightRed: '#FFD6D6',
+  primary: {
+    base: '#7c1ea3',
+    dark: '#4a0073',
+    light: '#af52d5',
+  },
+  secondary: {
+    base: '#9ccc64',
+    dark: '#6b9b36',
+    light: '#cfff94',
+  },
   white: '#fff',
   borderGray: '#d2d2d2',
   gray1: '#ececec',

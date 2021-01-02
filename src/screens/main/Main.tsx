@@ -15,7 +15,25 @@ const Main: React.FC = () => {
         <TextField label="LABEL" />
       </div>
       <div>
-        <Button onClick={onClick} variant="contained" text="Click" />
+        <Button
+          onClick={onClick}
+          variant="contained"
+          color="primary"
+          text="Click"
+        />
+        <Button onClick={onClick} variant="text" color="primary" text="Click" />
+        <Button
+          onClick={onClick}
+          variant="contained"
+          color="secondary"
+          text="Click"
+        />
+        <Button
+          onClick={onClick}
+          variant="text"
+          color="secondary"
+          text="Click"
+        />
       </div>
     </div>
   )
