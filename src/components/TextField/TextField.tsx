@@ -13,6 +13,7 @@ type Props = {
     input?: string
   }
   type?: 'password' | 'email' | 'default'
+  variant?: 'default' | 'select'
 }
 
 const useStyles = createUseStyles({
@@ -51,6 +52,12 @@ const useStyles = createUseStyles({
       borderColor: colors.secondary.dark,
     },
   },
+  dropDownIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 10,
+    color: colors.gray5,
+  },
 })
 
 const TextField: React.FC<Props> = ({
@@ -59,6 +66,7 @@ const TextField: React.FC<Props> = ({
   onChange,
   styles,
   type = 'default',
+  variant = 'default',
 }: Props) => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const classes = useStyles()
@@ -81,9 +89,15 @@ const TextField: React.FC<Props> = ({
           className={classnames(classes.input, styles?.input)}
           value={value}
           onChange={onChange}
-          onFocus={toggleFocus}
-          onBlur={toggleFocus}
+          onFocus={variant === 'default' ? toggleFocus : () => {}}
+          onBlur={variant === 'default' ? toggleFocus : () => {}}
+          readOnly
         />
+        {variant === 'select' && (
+          <i className={classnames('material-icons', classes.dropDownIcon)}>
+            arrow_drop_down
+          </i>
+        )}
       </label>
     </div>
   )

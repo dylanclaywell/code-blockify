@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import Button from '../../components/Button'
 import TextField from '../../components/TextField'
+import SelectField from '../../components/SelectField'
 
 const onClick = () => {
   alert('Clicked')
@@ -23,6 +24,14 @@ const Main: React.FC = () => {
           label="LABEL"
           value={textFieldValue}
           onChange={onChangeTextField}
+        />
+      </div>
+      <div>
+        <TextField
+          label="LABEL"
+          value={textFieldValue}
+          onChange={onChangeTextField}
+          variant="select"
         />
       </div>
       <div>

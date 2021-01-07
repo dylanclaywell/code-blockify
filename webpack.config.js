@@ -4,7 +4,7 @@ const HtmlPlugin = require('html-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const htmlPluginOptions = {
-  filename: 'public/index.html',
+  filename: isDev ? 'index.html' : 'public/index.html',
   template: 'src/public/index.html',
 }
 

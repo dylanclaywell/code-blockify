@@ -1,7 +1,18 @@
 import React from 'react'
-import DropDownArrow from '@material-ui/icons/ArrowDropDown'
+import classnames from 'classnames'
+import { createUseStyles } from 'react-jss'
 
 import TextField from '../TextField'
+import colors from '../../colors'
+
+const useStyles = createUseStyles({
+  icon: {
+    color: colors.gray5,
+  },
+  root: {
+    position: 'relative',
+  },
+})
 
 type Props = {
   value: string
@@ -19,16 +30,19 @@ const SelectField: React.FC<Props> = ({
   onChange,
   styles,
 }: Props) => {
+  const classes = useStyles()
   return (
-    <>
+    <div className={classes.root}>
       <TextField
         value={value}
         label={label}
         onChange={onChange}
         styles={styles}
       />
-      <DropDownArrow />
-    </>
+      <i className={classnames('material-icons', classes.icon)}>
+        arrow_drop_down
+      </i>
+    </div>
   )
 }
 
