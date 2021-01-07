@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Button from '../../components/Button'
 import TextField from '../../components/TextField'
@@ -8,11 +8,22 @@ const onClick = () => {
 }
 
 const Main: React.FC = () => {
+  const [textFieldValue, setTextFieldValue] = useState<string>('')
+
+  const onChangeTextField = (event) => {
+    console.log(event)
+    setTextFieldValue(event.target.value)
+  }
+
   return (
     <div>
       Main screen. Adding additional text here.
       <div>
-        <TextField label="LABEL" />
+        <TextField
+          label="LABEL"
+          value={textFieldValue}
+          onChange={onChangeTextField}
+        />
       </div>
       <div>
         <Button

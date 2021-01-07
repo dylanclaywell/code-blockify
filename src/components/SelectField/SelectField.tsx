@@ -1,4 +1,5 @@
 import React from 'react'
+import DropDownArrow from '@material-ui/icons/ArrowDropDown'
 
 import TextField from '../TextField'
 
@@ -19,12 +20,15 @@ const SelectField: React.FC<Props> = ({
   styles,
 }: Props) => {
   return (
-    <TextField
-      value={value}
-      label={label}
-      onChange={onChange}
-      styles={styles}
-    />
+    <>
+      <TextField
+        value={value}
+        label={label}
+        onChange={onChange}
+        styles={styles}
+      />
+      <DropDownArrow />
+    </>
   )
 }
 
