@@ -1,23 +1,31 @@
 import React, { useState } from 'react'
+import { createUseStyles } from 'react-jss'
 
 import Button from '../../components/Button'
 import TextField from '../../components/TextField'
-import SelectField from '../../components/SelectField'
+import colors from '../../colors'
+import MenuItem from '../../components/MenuItem'
+
+const useStyles = createUseStyles({
+  root: {
+    background: colors.backgroundGray,
+  },
+})
 
 const onClick = () => {
   alert('Clicked')
 }
 
 const Main: React.FC = () => {
+  const classes = useStyles()
   const [textFieldValue, setTextFieldValue] = useState<string>('')
 
   const onChangeTextField = (event) => {
-    console.log(event)
     setTextFieldValue(event.target.value)
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       Main screen. Adding additional text here.
       <div>
         <TextField
@@ -32,7 +40,11 @@ const Main: React.FC = () => {
           value={textFieldValue}
           onChange={onChangeTextField}
           variant="select"
-        />
+        >
+          <MenuItem value={'value1'} onClick={handleMenuItemClick}>
+            Text
+          </MenuItem>
+        </TextField>
       </div>
       <div>
         <Button

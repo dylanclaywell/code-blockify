@@ -14,6 +14,7 @@ const useStyles = createUseStyles(
       cursor: 'pointer',
       letterSpacing: '2px',
       transition: '300ms',
+      borderRadius: '4px',
     },
     contained: {
       color: colors.white,

@@ -11,6 +11,7 @@ export default {
   },
   white: '#fff',
   borderGray: '#d2d2d2',
+  backgroundGray: '#f5f5f5',
   gray1: '#ececec',
   gray2: '#dbdad9',
   gray3: '#c2c1c0',

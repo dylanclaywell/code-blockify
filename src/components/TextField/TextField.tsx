@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import classnames from 'classnames'
 
+import Menu from '../Menu'
+import MenuItem from '../MenuItem'
 import colors from '../../colors'
 
 type Props = {
@@ -14,9 +16,14 @@ type Props = {
   }
   type?: 'password' | 'email' | 'default'
   variant?: 'default' | 'select'
+  children?: React.ReactElement
 }
 
 const useStyles = createUseStyles({
+  root: {
+    position: 'relative' as const,
+    borderRadius: '0.5em',
+  },
   label: {
     position: 'relative' as const,
   },
@@ -42,7 +49,7 @@ const useStyles = createUseStyles({
   },
   input: {
     boxSizing: 'border-box',
-    borderRadius: 0,
+    borderRadius: '4px',
     border: `1px solid ${colors.borderGray}`,
     padding: '1em',
     outline: 'none',
@@ -67,7 +74,9 @@ const TextField: React.FC<Props> = ({
   styles,
   type = 'default',
   variant = 'default',
+  children,
 }: Props) => {
+  const [selectMenuIsOpen, setSelectMenuIsOpen] = useState<boolean>(false)
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const classes = useStyles()
   const labelTextClassNames = classnames({
@@ -80,8 +89,18 @@ const TextField: React.FC<Props> = ({
     setIsFocused(!isFocused)
   }
 
+  const openSelectMenu = () => {
+    setSelectMenuIsOpen(true)
+  }
+
+  const closeSelectMenu = () => {
+    setSelectMenuIsOpen(false)
+  }
+
+  const handleMenuItemClick = (event: any, value: string) => {}
+
   return (
-    <div className={classnames(styles?.root)}>
+    <div className={classnames(classes.root, styles?.root)}>
       <label className={classes.label}>
         <span className={labelTextClassNames}>{label}</span>
         <input
@@ -91,12 +110,17 @@ const TextField: React.FC<Props> = ({
           onChange={onChange}
           onFocus={variant === 'default' ? toggleFocus : () => {}}
           onBlur={variant === 'default' ? toggleFocus : () => {}}
-          readOnly
+          onClick={variant === 'select' ? openSelectMenu : () => {}}
         />
         {variant === 'select' && (
-          <i className={classnames('material-icons', classes.dropDownIcon)}>
-            arrow_drop_down
-          </i>
+          <>
+            <i className={classnames('material-icons', classes.dropDownIcon)}>
+              arrow_drop_down
+            </i>
+            <Menu onClose={closeSelectMenu} isOpen={selectMenuIsOpen}>
+              {children}
+            </Menu>
+          </>
         )}
       </label>
     </div>
