@@ -71,6 +71,7 @@ const useStyles = createUseStyles({
     top: 0,
     right: 10,
     color: colors.gray5,
+    cursor: 'pointer',
   },
   mask: {
     position: 'absolute',

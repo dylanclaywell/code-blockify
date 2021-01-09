@@ -5,11 +5,40 @@ import Button from '../../components/Button'
 import TextField from '../../components/TextField'
 import colors from '../../colors'
 import MenuItem from '../../components/MenuItem'
+import SlidePanelContainer from '../../components/SlidePanelContainer'
+import SlidePanel from '../../components/SlidePanel'
 
 const useStyles = createUseStyles({
   root: {
     background: colors.backgroundGray,
+    maxWidth: '40em',
+    padding: '2em',
+    margin: 'auto',
   },
+  textField: {
+    margin: '1em 0',
+  },
+  input: {
+    width: '100%',
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  thumbnail: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+  },
+  thumbnailContainer: {
+    width: '100%',
+    position: 'relative',
+    paddingTop: '56.25%',
+  },
+  slidePanelContainer: {},
+  slidePanel: {},
 })
 
 const onClick = () => {
@@ -17,12 +46,12 @@ const onClick = () => {
 }
 
 const initialFormFields = {
-  field1: '',
-  field2: '',
+  url: '',
 }
 
 const Main: React.FC = () => {
   const classes = useStyles()
+  const [thumbnailUrl, setThumbnailUrl] = useState('')
   const [formFields, setFormFields] = useState(initialFormFields)
 
   const onChangeTextField = (name) => (event) => {
@@ -31,45 +60,20 @@ const Main: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      Main screen. Adding additional text here.
-      <div>
-        <TextField
-          label="LABEL"
-          value={formFields.field1}
-          onChange={onChangeTextField('field1')}
-        />
-      </div>
-      <div>
-        <TextField
-          label="LABEL"
-          value={formFields.field2}
-          onChange={onChangeTextField('field2')}
-          variant="select"
-        >
-          <MenuItem value={'Text'}>Text</MenuItem>
-        </TextField>
-      </div>
-      <div>
-        <Button
-          onClick={onClick}
-          variant="contained"
-          color="primary"
-          text="Click"
-        />
-        <Button onClick={onClick} variant="text" color="primary" text="Click" />
-        <Button
-          onClick={onClick}
-          variant="contained"
-          color="secondary"
-          text="Click"
-        />
-        <Button
-          onClick={onClick}
-          variant="text"
-          color="secondary"
-          text="Click"
-        />
-      </div>
+      <SlidePanelContainer currentContainer="firstContainer">
+        <SlidePanel>
+          <h1>Please enter a URL to download from.</h1>
+          <TextField
+            label="URL"
+            value={formFields.url}
+            onChange={onChangeTextField('url')}
+            styles={{ root: classes.textField, input: classes.input }}
+          />
+          <div className={classes.buttonContainer}>
+            <Button onClick={() => {}} text="Submit" variant="contained" />
+          </div>
+        </SlidePanel>
+      </SlidePanelContainer>
     </div>
   )
 }

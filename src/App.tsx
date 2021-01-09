@@ -15,13 +15,16 @@ const useStyles = createUseStyles({
       background: colors.backgroundGray,
     },
   },
+  root: {
+    background: colors.backgroundGray,
+  },
 })
 
 const App: React.FC = () => {
-  useStyles()
+  const classes = useStyles()
 
   return (
-    <div>
+    <div className={classes.root}>
       <Main />
     </div>
   )
