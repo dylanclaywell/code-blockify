@@ -16,12 +16,17 @@ const onClick = () => {
   alert('Clicked')
 }
 
+const initialFormFields = {
+  field1: '',
+  field2: '',
+}
+
 const Main: React.FC = () => {
   const classes = useStyles()
-  const [textFieldValue, setTextFieldValue] = useState<string>('')
+  const [formFields, setFormFields] = useState(initialFormFields)
 
-  const onChangeTextField = (event) => {
-    setTextFieldValue(event.target.value)
+  const onChangeTextField = (name) => (event) => {
+    setFormFields({ ...formFields, [name]: event.target.value })
   }
 
   return (
@@ -30,20 +35,18 @@ const Main: React.FC = () => {
       <div>
         <TextField
           label="LABEL"
-          value={textFieldValue}
-          onChange={onChangeTextField}
+          value={formFields.field1}
+          onChange={onChangeTextField('field1')}
         />
       </div>
       <div>
         <TextField
           label="LABEL"
-          value={textFieldValue}
-          onChange={onChangeTextField}
+          value={formFields.field2}
+          onChange={onChangeTextField('field2')}
           variant="select"
         >
-          <MenuItem value={'value1'} onClick={handleMenuItemClick}>
-            Text
-          </MenuItem>
+          <MenuItem value={'Text'}>Text</MenuItem>
         </TextField>
       </div>
       <div>

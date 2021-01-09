@@ -12,6 +12,7 @@ const useStyles = createUseStyles({
     position: 'absolute',
     boxShadow: theme.elevation1,
     borderRadius: '4px',
+    transition: '100ms',
   },
   hidden: {
     visibility: 'hidden',
@@ -30,7 +31,7 @@ const Menu: React.FC<Props> = ({ isOpen, children, onClose }: Props) => {
   const classes = useStyles()
 
   const handleClickOutside = (event) => {
-    if (ref && !ref.current.contains(event.target)) {
+    if (isOpen && ref && !ref.current.contains(event.target)) {
       onClose()
     }
   }
@@ -41,7 +42,7 @@ const Menu: React.FC<Props> = ({ isOpen, children, onClose }: Props) => {
     return () => {
       document.removeEventListener('click', handleClickOutside, true)
     }
-  }, [])
+  })
 
   return (
     <div

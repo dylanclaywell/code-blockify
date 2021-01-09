@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import classnames from 'classnames'
 
 import Menu from '../Menu'
-import MenuItem from '../MenuItem'
 import colors from '../../colors'
 
 type Props = {
@@ -24,10 +23,17 @@ const useStyles = createUseStyles({
     position: 'relative' as const,
     borderRadius: '0.5em',
   },
+  select: {
+    cursor: 'pointer',
+  },
   label: {
     position: 'relative' as const,
   },
   labelText: {
+    position: 'relative',
+    color: colors.gray5,
+  },
+  labelContainer: {
     position: 'absolute' as const,
     top: '0.25em',
     left: '1.1em',
@@ -36,13 +42,14 @@ const useStyles = createUseStyles({
     transition: '200ms all',
     color: colors.gray5,
   },
-  labelTextSmall: {
+  labelContainerSmall: {
     top: '-1.75em',
     left: '1.1em',
-    background: 'white',
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
     fontSize: '0.8em',
+    position: 'absolute',
+    transition: '200ms all',
   },
   labelTextActive: {
     color: colors.secondary.dark,
@@ -65,6 +72,15 @@ const useStyles = createUseStyles({
     right: 10,
     color: colors.gray5,
   },
+  mask: {
+    position: 'absolute',
+    background: 'white',
+    height: '2px',
+    width: '100%',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
 })
 
 const TextField: React.FC<Props> = ({
@@ -76,12 +92,12 @@ const TextField: React.FC<Props> = ({
   variant = 'default',
   children,
 }: Props) => {
+  const inputRef = useRef<HTMLInputElement>()
   const [selectMenuIsOpen, setSelectMenuIsOpen] = useState<boolean>(false)
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const classes = useStyles()
   const labelTextClassNames = classnames({
     [classes.labelText]: Boolean(label),
-    [classes.labelTextSmall]: value || isFocused,
     [classes.labelTextActive]: isFocused,
   })
 
@@ -97,32 +113,62 @@ const TextField: React.FC<Props> = ({
     setSelectMenuIsOpen(false)
   }
 
-  const handleMenuItemClick = (event: any, value: string) => {}
+  const handleMenuItemClick = (event: Event, value: string) => {
+    if (inputRef) {
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value'
+      ).set
+      nativeInputValueSetter.call(inputRef.current, value)
+
+      const ev = new Event('input', { bubbles: true })
+      inputRef.current.dispatchEvent(ev)
+
+      closeSelectMenu()
+    }
+  }
 
   return (
     <div className={classnames(classes.root, styles?.root)}>
       <label className={classes.label}>
-        <span className={labelTextClassNames}>{label}</span>
+        <span
+          className={classnames(classes.labelContainer, {
+            [classes.labelContainerSmall]: value || isFocused,
+          })}
+        >
+          <div className={classes.mask}></div>
+          <span className={labelTextClassNames}>{label}</span>
+        </span>
         <input
+          ref={inputRef}
           type={type === 'default' ? '' : type}
-          className={classnames(classes.input, styles?.input)}
+          className={classnames(classes.input, styles?.input, {
+            [classes.select]: variant === 'select',
+          })}
           value={value}
           onChange={onChange}
           onFocus={variant === 'default' ? toggleFocus : () => {}}
           onBlur={variant === 'default' ? toggleFocus : () => {}}
           onClick={variant === 'select' ? openSelectMenu : () => {}}
+          readOnly={variant === 'select'}
         />
         {variant === 'select' && (
           <>
             <i className={classnames('material-icons', classes.dropDownIcon)}>
               arrow_drop_down
             </i>
-            <Menu onClose={closeSelectMenu} isOpen={selectMenuIsOpen}>
-              {children}
-            </Menu>
           </>
         )}
       </label>
+      {variant === 'select' && (
+        <>
+          <Menu onClose={closeSelectMenu} isOpen={selectMenuIsOpen}>
+            {React.cloneElement(children, {
+              onClick: handleMenuItemClick,
+            })}
+          </Menu>
+        </>
+      )}
     </div>
   )
 }
