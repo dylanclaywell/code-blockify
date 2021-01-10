@@ -2,10 +2,12 @@ import React from 'react'
 
 type Props = {
   children: React.ReactNode
-  name: string
+  isOpen: boolean
 }
 
-const SlidePanel = ({ children }: Props) => {
+const SlidePanel = ({ children, isOpen }: Props) => {
+  if (!isOpen) return null
+
   return <div>{children}</div>
 }
 

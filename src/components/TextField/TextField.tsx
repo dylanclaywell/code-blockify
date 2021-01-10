@@ -102,6 +102,12 @@ const TextField: React.FC<Props> = ({
     [classes.labelTextActive]: isFocused,
   })
 
+  if (children && variant !== 'select') {
+    throw new Error(
+      "Children can only be passed to a TextField if the variant is 'select'"
+    )
+  }
+
   const toggleFocus = () => {
     setIsFocused(!isFocused)
   }

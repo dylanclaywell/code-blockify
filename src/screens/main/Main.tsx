@@ -4,7 +4,6 @@ import { createUseStyles } from 'react-jss'
 import Button from '../../components/Button'
 import TextField from '../../components/TextField'
 import colors from '../../colors'
-import MenuItem from '../../components/MenuItem'
 import SlidePanelContainer from '../../components/SlidePanelContainer'
 import SlidePanel from '../../components/SlidePanel'
 
@@ -52,16 +51,21 @@ const initialFormFields = {
 const Main: React.FC = () => {
   const classes = useStyles()
   const [thumbnailUrl, setThumbnailUrl] = useState('')
+  const [currentPanel, setCurrentPanel] = useState('first')
   const [formFields, setFormFields] = useState(initialFormFields)
 
   const onChangeTextField = (name) => (event) => {
     setFormFields({ ...formFields, [name]: event.target.value })
   }
 
+  const setPanel = (name: string) => () => {
+    setCurrentPanel(name)
+  }
+
   return (
     <div className={classes.root}>
-      <SlidePanelContainer currentContainer="firstContainer">
-        <SlidePanel>
+      <SlidePanelContainer currentPanelName={currentPanel}>
+        <SlidePanel name="first">
           <h1>Please enter a URL to download from.</h1>
           <TextField
             label="URL"
@@ -70,8 +74,16 @@ const Main: React.FC = () => {
             styles={{ root: classes.textField, input: classes.input }}
           />
           <div className={classes.buttonContainer}>
-            <Button onClick={() => {}} text="Submit" variant="contained" />
+            <Button onClick={setPanel('second')} variant="contained">
+              Submit
+            </Button>
           </div>
+        </SlidePanel>
+        <SlidePanel name="second">
+          <Button onClick={setPanel('first')} variant="contained">
+            <i className="material-icons">keyboard_arrow_left</i>Back
+          </Button>
+          <p>Next content</p>
         </SlidePanel>
       </SlidePanelContainer>
     </div>

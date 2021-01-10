@@ -15,6 +15,8 @@ const useStyles = createUseStyles(
       letterSpacing: '2px',
       transition: '300ms',
       borderRadius: '4px',
+      display: 'flex',
+      alignItems: 'center',
     },
     contained: {
       color: colors.white,
@@ -51,16 +53,16 @@ const useStyles = createUseStyles(
 
 type Props = {
   onClick: () => void
-  text: string
+  children: React.ReactNode
   variant?: 'text' | 'contained'
   color?: 'primary' | 'secondary'
 }
 
 const Button: React.FC<Props> = ({
   onClick,
-  text,
   variant = 'text',
   color = 'primary',
+  children,
 }: Props) => {
   const classes = useStyles()
   const rootClasses = classnames(classes.root, {
@@ -71,7 +73,7 @@ const Button: React.FC<Props> = ({
 
   return (
     <button className={rootClasses} onClick={onClick}>
-      {text}
+      {children}
     </button>
   )
 }
