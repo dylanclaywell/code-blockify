@@ -10,6 +10,7 @@ const useStyles = createUseStyles({
     display: 'flex',
     alignItems: 'center',
     padding: '1em',
+    '-webkit-app-region': 'drag',
   },
 })
 

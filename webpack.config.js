@@ -15,7 +15,7 @@ let entry = {
 }
 if (!isDev) {
   entry.electron = {
-    import: path.resolve(__dirname, './src/main.tsx'),
+    import: path.resolve(__dirname, './src/main.ts'),
   }
 }
 
