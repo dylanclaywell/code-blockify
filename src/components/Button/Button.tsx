@@ -56,6 +56,9 @@ type Props = {
   children: React.ReactNode
   variant?: 'text' | 'contained'
   color?: 'primary' | 'secondary'
+  styles?: {
+    root?: string
+  }
 }
 
 const Button: React.FC<Props> = ({
@@ -63,13 +66,18 @@ const Button: React.FC<Props> = ({
   variant = 'text',
   color = 'primary',
   children,
+  styles,
 }: Props) => {
   const classes = useStyles()
-  const rootClasses = classnames(classes.root, {
-    [classes.text]: variant === 'text',
-    [classes.contained]: variant === 'contained',
-    [classes.secondary]: color === 'secondary',
-  })
+  const rootClasses = classnames(
+    classes.root,
+    {
+      [classes.text]: variant === 'text',
+      [classes.contained]: variant === 'contained',
+      [classes.secondary]: color === 'secondary',
+    },
+    styles.root
+  )
 
   return (
     <button className={rootClasses} onClick={onClick}>

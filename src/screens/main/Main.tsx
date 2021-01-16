@@ -1,91 +1,135 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
+import {
+  nightOwl,
+  darcula,
+  gruvboxDark,
+  gruvboxLight,
+} from 'react-syntax-highlighter/dist/cjs/styles/hljs'
+import html2canvas from 'html2canvas'
+import classnames from 'classnames'
 
-import Button from '../../components/Button'
-import TextField from '../../components/TextField'
 import colors from '../../colors'
-import SlidePanelContainer from '../../components/SlidePanelContainer'
-import SlidePanel from '../../components/SlidePanel'
+import { toolbarHeight } from '../../theme'
+import SyntaxHighlighter from './components/SyntaxHighlighter'
+import Controls from './components/Controls'
+import SourceCode from './components/SourceCode'
+import SourceCodeBlockDialog from './components/SourceCodeBlockDialog'
 
 const useStyles = createUseStyles({
   root: {
     background: colors.backgroundGray,
-    maxWidth: '40em',
-    padding: '2em',
+    marginTop: `${toolbarHeight}px`,
+    overflowY: 'auto',
+    height: `calc(100vh - ${toolbarHeight}px)`,
+  },
+  container: {
     margin: 'auto',
+    padding: '2em',
   },
-  textField: {
-    margin: '1em 0',
+  locked: {
+    overflow: 'hidden',
   },
-  input: {
-    width: '100%',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  thumbnail: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-  },
-  thumbnailContainer: {
-    width: '100%',
-    position: 'relative',
-    paddingTop: '56.25%',
-  },
-  slidePanelContainer: {},
-  slidePanel: {},
 })
 
-const onClick = () => {
-  alert('Clicked')
-}
+const block = '■'
 
-const initialFormFields = {
-  url: '',
+const colorSchemes = {
+  darcula,
+  nightOwl,
+  gruvboxLight,
+  gruvboxDark,
 }
 
 const Main: React.FC = () => {
   const classes = useStyles()
-  const [thumbnailUrl, setThumbnailUrl] = useState('')
-  const [currentPanel, setCurrentPanel] = useState('first')
-  const [formFields, setFormFields] = useState(initialFormFields)
+  const [clonedSyntaxHighlighter, setClonedSyntaxHighlighter] = useState(null)
+  const [sourceCode, setSourceCode] = useState('')
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
+  const [currentColorSchemeName, setColorScheme] = useState<
+    keyof typeof colorSchemes
+  >('nightOwl')
 
-  const onChangeTextField = (name) => (event) => {
-    setFormFields({ ...formFields, [name]: event.target.value })
+  const currentColorScheme = colorSchemes[currentColorSchemeName]
+
+  const changeSourceCode = (event) => {
+    setSourceCode(event.target.value)
   }
 
-  const setPanel = (name: string) => () => {
-    setCurrentPanel(name)
+  const changeColorScheme = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setColorScheme(event.target.value as keyof typeof colorSchemes)
+  }
+
+  const transformCode = () => {
+    setClonedSyntaxHighlighter(
+      React.cloneElement(
+        <SyntaxHighlighter
+          className="ClonedSyntaxHighlighter"
+          colorScheme={currentColorScheme}
+          sourceCode={sourceCode}
+          style={{
+            hljs: {
+              ...currentColorScheme.hljs,
+              letterSpacing: '-0.5px',
+              overflow: 'none',
+            },
+          }}
+        />
+      )
+    )
+  }
+
+  useEffect(() => {
+    const codeBlock = document.querySelector('.ClonedSyntaxHighlighter')
+
+    if (!codeBlock) return
+
+    for (const child of Array.from(codeBlock.children[0].childNodes)) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        ;(child as Element).innerHTML = (child as Element).innerHTML.replace(
+          /\S/gm,
+          block
+        )
+      } else if (child.nodeType === Node.TEXT_NODE) {
+        child.textContent = child.textContent.replace(/\S/gm, block)
+      }
+    }
+
+    setDialogIsOpen(true)
+
+    // html2canvas(document.querySelector('.ClonedSyntaxHighlighter')).then(
+    //   (canvas) => {
+    //     document.body.appendChild(canvas)
+    //   }
+    // )
+  }, [clonedSyntaxHighlighter])
+
+  const closeDialog = () => {
+    setDialogIsOpen(false)
   }
 
   return (
-    <div className={classes.root}>
-      <SlidePanelContainer currentPanelName={currentPanel}>
-        <SlidePanel name="first">
-          <h1>Please enter a URL to download from.</h1>
-          <TextField
-            label="URL"
-            value={formFields.url}
-            onChange={onChangeTextField('url')}
-            styles={{ root: classes.textField, input: classes.input }}
-          />
-          <div className={classes.buttonContainer}>
-            <Button onClick={setPanel('second')} variant="contained">
-              Submit
-            </Button>
-          </div>
-        </SlidePanel>
-        <SlidePanel name="second">
-          <Button onClick={setPanel('first')} variant="contained">
-            <i className="material-icons">keyboard_arrow_left</i>Back
-          </Button>
-          <p>Next content</p>
-        </SlidePanel>
-      </SlidePanelContainer>
+    <div
+      className={classnames(classes.root, { [classes.locked]: dialogIsOpen })}
+    >
+      <div className={classes.container}>
+        <Controls
+          onTransformCode={transformCode}
+          currentColorSchemeName={currentColorSchemeName}
+          colorSchemeNames={Object.keys(colorSchemes)}
+          onChangeColorScheme={changeColorScheme}
+        />
+        <SourceCode
+          currentColorScheme={currentColorScheme}
+          onChangeSourceCode={changeSourceCode}
+          sourceCode={sourceCode}
+        />
+        <SourceCodeBlockDialog
+          clonedSyntaxHighlighter={clonedSyntaxHighlighter}
+          isOpen={dialogIsOpen}
+          onClose={closeDialog}
+        />
+      </div>
     </div>
   )
 }

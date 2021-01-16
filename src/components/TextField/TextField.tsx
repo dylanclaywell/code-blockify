@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import classnames from 'classnames'
 
+import { Props as MenuItemProps } from '../MenuItem'
 import Menu from '../Menu'
 import colors from '../../colors'
 
@@ -15,7 +16,9 @@ type Props = {
   }
   type?: 'password' | 'email' | 'default'
   variant?: 'default' | 'select'
-  children?: React.ReactElement
+  children?:
+    | React.ReactElement<typeof MenuItemProps>
+    | React.ReactElement<typeof MenuItemProps>[]
 }
 
 const useStyles = createUseStyles({
@@ -170,9 +173,11 @@ const TextField: React.FC<Props> = ({
       {variant === 'select' && (
         <>
           <Menu onClose={closeSelectMenu} isOpen={selectMenuIsOpen}>
-            {React.cloneElement(children, {
-              onClick: handleMenuItemClick,
-            })}
+            {React.Children.map(children, (child) =>
+              React.cloneElement(child, {
+                onClick: handleMenuItemClick,
+              })
+            )}
           </Menu>
         </>
       )}

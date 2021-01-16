@@ -1,5 +1,6 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
+import classnames from 'classnames'
 
 import colors from '../../colors'
 
@@ -10,18 +11,20 @@ const useStyles = createUseStyles({
     display: 'flex',
     alignItems: 'center',
     padding: '1em',
-    '-webkit-app-region': 'drag',
   },
 })
 
 type Props = {
   children?: React.ReactNode
+  styles?: {
+    root?: string
+  }
 }
 
-const Toolbar = ({ children }: Props) => {
+const Toolbar = ({ children, styles }: Props) => {
   const classes = useStyles()
 
-  return <div className={classes.root}>{children}</div>
+  return <div className={classnames(classes.root, styles.root)}>{children}</div>
 }
 
 export default Toolbar

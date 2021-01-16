@@ -21,7 +21,10 @@ if (!isDev) {
 
 const plugins = [
   new CopyPlugin({
-    patterns: [{ from: './src/public', to: 'public' }],
+    patterns: [
+      { from: './src/public', to: 'public' },
+      { from: './src/preload.js', to: 'preload.js' },
+    ],
   }),
   new HtmlPlugin(htmlPluginOptions),
 ]

@@ -14,7 +14,7 @@ const useStyles = createUseStyles({
   },
 })
 
-type Props = {
+export type Props = {
   onClick?: (event: any, value: string) => void
   children: React.ReactNode
   value?: string
