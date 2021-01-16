@@ -1,9 +1,18 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "module": "commonjs",
+    "target": "es5",
+    "lib": ["es2015", "dom"],
+    "jsx": "react",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "declaration": true,
     "outDir": "dist",
-    "jsx": "react"
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
